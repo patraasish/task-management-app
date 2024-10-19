@@ -62,4 +62,26 @@ public class TaskService {
 	}
 	
 	
+	public String updateTask(int id,String title, String description, String deadline,boolean completed) {
+		TaskEntity taskEntity= getTaskById(id);
+		
+		if(taskEntity==null) {
+			return null;
+		}
+		
+		if(title!=null) {
+			taskEntity.setTitle(title);
+		}
+		if(description!=null) {
+			taskEntity.setDescription(description);
+		}
+		if(deadline!=null) {
+			taskEntity.setDeadline(date);
+		}
+		if(completed!=false) {
+			taskEntity.setCompleted(completed);
+		}
+		return "successfully updated..";
+	}
+	
 }
