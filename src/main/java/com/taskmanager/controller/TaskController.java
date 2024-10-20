@@ -2,6 +2,7 @@ package com.taskmanager.controller;
 
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.taskmanager.dto.CreateTaskDTO;
+import com.taskmanager.dto.TaskResponseDTO;
 import com.taskmanager.dto.UpdateTaskDTO;
 import com.taskmanager.entities.TaskEntity;
+import com.taskmanager.service.NoteService;
 import com.taskmanager.service.TaskService;
 
 @RestController
@@ -25,6 +28,12 @@ public class TaskController {
 
 	@Autowired
 	private TaskService taskService;
+	
+	@Autowired
+	private NoteService noteService;
+	
+	@Autowired
+	private ModelMapper modelMapper;
 	
 	@PostMapping
 	public ResponseEntity<TaskEntity> addTask(@RequestBody CreateTaskDTO createTaskDTO){
@@ -38,12 +47,16 @@ public class TaskController {
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<TaskEntity> getTaskById(@PathVariable("id") int id){
+	public ResponseEntity<TaskResponseDTO> getTaskById(@PathVariable("id") int id){
 		var task=taskService.getTaskById(id);
+		var notes= noteService.getNotesForTask(id);
 		if(task==null) {
 			return ResponseEntity.notFound().build();
 		}
-		return new ResponseEntity<TaskEntity>(task,HttpStatus.OK);
+		
+		var taskResponse=modelMapper.map(task,TaskResponseDTO.class);
+		taskResponse.setNotes(notes);
+		return ResponseEntity.ok(taskResponse);
 	}
 	
 	@DeleteMapping("/{id}")

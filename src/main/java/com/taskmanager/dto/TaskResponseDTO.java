@@ -1,16 +1,18 @@
-package com.taskmanager.entities;
+package com.taskmanager.dto;
 
 import java.time.LocalDate;
+import java.util.List;
 
+import com.taskmanager.entities.NoteEntity;
 
-public class TaskEntity {
-
+public class TaskResponseDTO {
+	
 	private int id;
 	private String title;
 	private String description;
 	private LocalDate deadline;
 	private boolean completed;
-	
+	private List<NoteEntity> notes;
 	
 	public int getId() {
 		return id;
@@ -43,9 +45,12 @@ public class TaskEntity {
 		this.completed = completed;
 	}
 	
-
-	public TaskEntity() {
-		
+	
+	public List<NoteEntity> getNotes() {
+		return notes;
 	}
 	
+	public void setNotes(List<NoteEntity> notes) {
+		this.notes = notes;
+	}
 }

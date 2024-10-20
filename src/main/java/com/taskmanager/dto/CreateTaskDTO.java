@@ -5,6 +5,7 @@ public class CreateTaskDTO {
 	private String title;
 	private String description;
 	private String deadline;
+	
 	public String getTitle() {
 		return title;
 	}
